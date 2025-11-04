@@ -1,10 +1,22 @@
-name : Hello Github Actions
+name : Multi JOb Workflow
 on : [push]
 jobs:
-  say-hello:
-    runs-on : ubuntu-latest
+  build:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      use: actions/checkout@v4
+      -name: Install dep
+      run: | 
+            echo "Installing requirements.."
+            pip install -r requirements.txt || echo "No requirement file found"
+  test:
+    needs: build
+    runs-on: ubuntu-latest
     steps:
-      - name : Printing a greeting
-        run  : echo "Hello from Github Action"
-
-
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run tests
+        run: | 
+            echo "running test.."
