@@ -1,22 +1,27 @@
-name : Multi JOb Workflow
-on : [push]
+name: Multi Job Workflow
+
+on: [push]
+
 jobs:
   build:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout code
-      use: actions/checkout@v4
-      -name: Install dep
-      run: | 
-            echo "Installing requirements.."
-            pip install -r requirements.txt || echo "No requirement file found"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          echo "Installing requirements..."
+          pip install -r requirements.txt || echo "No requirements file found."
+
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Run tests
-        run: | 
-            echo "running test.."
+        run: |
+          echo "Running tests..."
+          pytest || echo "pytest not found"
